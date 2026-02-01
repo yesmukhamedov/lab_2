@@ -2,44 +2,55 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <title>Users Admin</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 24px; }
+        h1 { margin-bottom: 16px; }
         table { border-collapse: collapse; width: 100%; margin-top: 16px; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         th { background: #f5f5f5; }
         form.inline { display: inline; }
-        .form-row { margin-bottom: 12px; }
-        .form-row label { display: inline-block; width: 80px; }
+        .form-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-bottom: 12px; }
+        .form-row label { display: inline-block; min-width: 70px; }
+        .form-row input, .form-row select { min-width: 160px; }
+        .form-actions { margin-top: 8px; }
+        .form-actions a { margin-left: 8px; font-size: 0.9em; }
     </style>
 </head>
 <body>
-<h1>Users</h1>
+<h1>Users Admin</h1>
 
 <h2 th:text="${editMode} ? 'Edit User' : 'Create User'">Create User</h2>
-<form th:action="${editMode} ? @{/users/{id}(id=${formUser.id})} : @{/users}" method="post">
-    <input type="hidden" name="_method" th:if="${editMode}" value="PUT"/>
-    <input type="hidden" name="id" th:value="${formUser.id}" th:if="${editMode}"/>
+<form th:object="${formUser}" th:action="${editMode} ? @{/users/{id}(id=${formUser.id})} : @{/users}" method="post">
+    <input type="hidden" name="_method" value="PUT" th:if="${editMode}"/>
 
     <div class="form-row">
         <label for="name">Name</label>
-        <input id="name" name="name" type="text" th:value="${formUser.name}" required/>
-    </div>
-    <div class="form-row">
+        <input id="name" type="text" th:field="*{name}"/>
+
         <label for="age">Age</label>
-        <input id="age" name="age" type="number" th:value="${formUser.age}"/>
-    </div>
-    <div class="form-row">
+        <input id="age" type="number" th:field="*{age}"/>
+
         <label for="status">Status</label>
-        <select id="status" name="status">
-            <option value="ACTIVE" th:selected="${formUser.status == 'ACTIVE'}">ACTIVE</option>
-            <option value="INACTIVE" th:selected="${formUser.status == 'INACTIVE'}">INACTIVE</option>
-            <option value="BLOCKED" th:selected="${formUser.status == 'BLOCKED'}">BLOCKED</option>
+        <select id="status" th:field="*{status}">
+            <th:block th:if="${statuses != null}">
+                <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
+            </th:block>
+            <th:block th:unless="${statuses != null}">
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="INACTIVE">INACTIVE</option>
+                <option value="BLOCKED">BLOCKED</option>
+            </th:block>
         </select>
     </div>
-    <button type="submit" th:text="${editMode} ? 'Update' : 'Create'">Create</button>
+
+    <div class="form-actions">
+        <button type="submit" th:text="${editMode} ? 'Update' : 'Create'">Create</button>
+        <a th:if="${editMode}" th:href="@{/users}">Cancel</a>
+    </div>
 </form>
 
+<h2>Users</h2>
 <table>
     <thead>
     <tr>
@@ -52,6 +63,9 @@
     </tr>
     </thead>
     <tbody>
+    <tr th:if="${#lists.isEmpty(users)}">
+        <td colspan="6">No users yet.</td>
+    </tr>
     <tr th:each="user : ${users}">
         <td><a th:href="@{/users(editId=${user.id})}" th:text="${user.id}">1</a></td>
         <td th:text="${user.name}">Name</td>
@@ -61,9 +75,17 @@
             <form class="inline" th:action="@{/users/{id}(id=${user.id})}" method="post">
                 <input type="hidden" name="_method" value="PATCH"/>
                 <select name="status">
-                    <option value="ACTIVE" th:selected="${user.status == 'ACTIVE'}">ACTIVE</option>
-                    <option value="INACTIVE" th:selected="${user.status == 'INACTIVE'}">INACTIVE</option>
-                    <option value="BLOCKED" th:selected="${user.status == 'BLOCKED'}">BLOCKED</option>
+                    <th:block th:if="${statuses != null}">
+                        <option th:each="status : ${statuses}"
+                                th:value="${status}"
+                                th:text="${status}"
+                                th:selected="${status == user.status}"></option>
+                    </th:block>
+                    <th:block th:unless="${statuses != null}">
+                        <option value="ACTIVE" th:selected="${user.status == 'ACTIVE'}">ACTIVE</option>
+                        <option value="INACTIVE" th:selected="${user.status == 'INACTIVE'}">INACTIVE</option>
+                        <option value="BLOCKED" th:selected="${user.status == 'BLOCKED'}">BLOCKED</option>
+                    </th:block>
                 </select>
                 <button type="submit">Change</button>
             </form>
@@ -77,6 +99,5 @@
     </tr>
     </tbody>
 </table>
-
 </body>
 </html>
