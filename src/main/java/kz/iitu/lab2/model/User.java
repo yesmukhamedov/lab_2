@@ -1,4 +1,4 @@
-package kz.iitu.lab2.domain;
+package kz.iitu.lab2.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,15 +9,11 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
     private Integer age;
-
     private String status;
 
     public Long getId() {
