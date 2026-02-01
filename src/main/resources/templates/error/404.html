@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Not Found</title>
+</head>
+<body>
+<h1>Not Found</h1>
+<p th:text="${message}">The requested resource was not found.</p>
+<p>
+    <a th:href="@{/students}">Back to students</a>
+</p>
+</body>
+</html>
