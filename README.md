@@ -1,6 +1,6 @@
-# Lab 2 - Users CRUD (Spring Boot + PostgreSQL)
+# Lab 2 - Users MVC CRUD (Spring Boot + PostgreSQL)
 
-Minimal Spring Boot 3 (Java 17) MVC CRUD for a single `User` entity using one controller and one Thymeleaf view.
+Spring Boot 3 (Java 17) MVC CRUD for a single `User` entity using one controller and one Thymeleaf view.
 
 ## Prerequisites
 
@@ -36,3 +36,10 @@ mvn spring-boot:run
 ```
 
 Open: http://localhost:8080/users
+
+## How to use the page
+
+- Create: fill in the top form and click **Create**.
+- Edit: click an ID in the table to load the user into the form, then click **Update**.
+- Change status: use the Status Change dropdown in a row and click **Change**.
+- Delete: click **Delete** in the row you want to remove.

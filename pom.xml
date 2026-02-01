@@ -11,10 +11,10 @@
     </parent>
 
     <groupId>kz.iitu</groupId>
-    <artifactId>lab2-users-crud</artifactId>
+    <artifactId>lab2-users-mvc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>lab2-users-crud</name>
-    <description>Lab 2 Users CRUD with PostgreSQL</description>
+    <name>lab2-users-mvc</name>
+    <description>Lab 2 Users MVC with PostgreSQL</description>
 
     <properties>
         <java.version>17</java.version>
